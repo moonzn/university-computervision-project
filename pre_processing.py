@@ -1,8 +1,8 @@
 import json
 import shutil
 
-DATASET_FOLDER = "crowd_dataset"  # Diretoria do dataset
-FILTERED_DATASET_FOLDER = "crowd_dataset_filtered"  # Diretoria onde colocar as imagens que passaram na filtragem
+DATASET_FOLDER = "CrowdHuman"  # Diretoria do dataset
+FILTERED_DATASET_FOLDER = "faces"  # Diretoria onde colocar as imagens que passaram na filtragem
 ANNOTATIONS_FN = "annotation_train.odgt"  # Ficheiro de anotações
 PERSONS_THRESHOLD = 5  # Nº mínimo de pessoas por fotografia
 
