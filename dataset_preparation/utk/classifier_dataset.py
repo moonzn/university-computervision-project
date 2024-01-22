@@ -1,7 +1,7 @@
 import os
 import shutil
 
-utk = "./UTK"
+utk = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'), 'UTK')
 ethnicity = ["white", "black", "asian", "indian", "others"]
 age_group = ["0-2", "3-7", "8-12", "13-19", "20-36", "37-65", "66+"]
 
@@ -49,4 +49,3 @@ if os.path.exists(utk):
         shutil.copy(utk + '/' + filename, "./classifier/" + ethnicity[race] + "/" + age_group[ageGroupFinder(age)])
 
     printStats()
-    shutil.rmtree(utk)

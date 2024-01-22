@@ -24,7 +24,6 @@ CROWDHUMAN_ANNOTATIONS_PATH = '../../datasets/crowdhuman/annotations/crowdhuman_
 # Creates the directories or recreates them
 current_directory = os.getcwd()
 CROWDHUMAN_PATH = os.path.join(current_directory, CROWDHUMAN_DIR)
-print(CROWDHUMAN_PATH)
 for dyr in directories:
     if not os.path.exists(dyr):
         os.makedirs(dyr)
