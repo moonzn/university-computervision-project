@@ -8,18 +8,18 @@ DESKTOP_PATH = os.path.join(os.environ['USERPROFILE'], 'Desktop')
 # The CrowdHuman dataset should be placed in the user's desktop, in a folder named 'CrowdHuman'
 RAW_CROWDHUMAN_PATH = os.path.join(DESKTOP_PATH, 'CrowdHuman')
 # Annotations for this dataset
-RAW_ANNOTATIONS = 'annotations/annotation_train.odgt'
+RAW_ANNOTATIONS = 'annotations\\annotation_train.odgt'
 
 # Throw error if there is no 'CrowdHuman' folder in the user's desktop
 if not os.path.exists(RAW_CROWDHUMAN_PATH):
     exit(f'No dataset found in \'{RAW_CROWDHUMAN_PATH}\'. Please place the dataset in the specified path.')
 
 # Filtered versions will be created in these directories
-CROWDHUMAN_DIR = '../../datasets/crowdhuman/dataset'
-ANNOTATIONS_DIR = '../../datasets/crowdhuman/annotations'
+CROWDHUMAN_DIR = '..\\..\\datasets\\crowdhuman\\dataset'
+ANNOTATIONS_DIR = '..\\..\\datasets\\crowdhuman\\annotations'
 directories = [CROWDHUMAN_DIR, ANNOTATIONS_DIR]
 # The filtered annotations will be stored in this file
-CROWDHUMAN_ANNOTATIONS_PATH = '../../datasets/crowdhuman/annotations/crowdhuman_annotations'
+CROWDHUMAN_ANNOTATIONS_PATH = '..\\..\\datasets\\crowdhuman\\annotations\\crowdhuman_annotations'
 
 # Creates the directories or recreates them
 current_directory = os.getcwd()
@@ -42,7 +42,7 @@ with open(f'{RAW_ANNOTATIONS}', 'r') as file:
     for row in file:
         json_obj = json.loads(row)
 
-        # Contagem do número de rostos na fotografia
+        # Counting the number of faces in the image
         bounding_boxes = json_obj['gtboxes']
         n_bounding_boxes = 0
         for bbox in bounding_boxes:
@@ -66,8 +66,8 @@ with open(f'{RAW_ANNOTATIONS}', 'r') as file:
                 number_of_images += 1
                 number_of_detections += n_bounding_boxes
 
-# Gravação do novo ficheiro de anotações já filtrado
+# Saving the new filtered annotations file
 with open(f'{CROWDHUMAN_ANNOTATIONS_PATH}', 'w') as file:
-    file.write(annotations_filtered)
+    file.write(annotations_filtered.replace("'", "\""))
 
-print(number_of_detections)
+print(f'Number of detections = {number_of_detections}')
