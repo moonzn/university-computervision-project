@@ -1,5 +1,4 @@
-import json
-import shutil
+from global_variables import *
 
 DATASET_FOLDER = "CrowdHuman"  # Diretoria do dataset
 FILTERED_DATASET_FOLDER = "faces"  # Diretoria onde colocar as imagens que passaram na filtragem

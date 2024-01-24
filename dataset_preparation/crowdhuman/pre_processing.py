@@ -1,15 +1,12 @@
-import os
-import json
-import shutil
-import global_variables
+from global_variables import *
 
 # User's Desktop path
-desktop_path = global_variables.DESKTOP_PATH
+desktop_path = DESKTOP_PATH
 
 # The CrowdHuman dataset should be placed in the user's desktop, in a folder named 'CrowdHuman'
-raw_crowdhuman_path = global_variables.RAW_CROWDHUMAN_PATH
+raw_crowdhuman_path = RAW_CROWDHUMAN_PATH
 # Annotations for this dataset
-raw_annotations = global_variables.RAW_CROWDHUMAN_ANNOTATIONS_PATH
+raw_annotations = RAW_CROWDHUMAN_ANNOTATIONS_PATH
 
 # Throw error if there is no 'CrowdHuman' folder in the user's desktop
 if not os.path.exists(raw_crowdhuman_path):
@@ -17,11 +14,11 @@ if not os.path.exists(raw_crowdhuman_path):
          f'path.')
 
 # Filtered versions will be created in these directories
-crowdhuman_dir = global_variables.CROWDHUMAN_DIR
-annotations_dir = global_variables.CROWHUMAN_ANNOTATIONS_DIR
+crowdhuman_dir = CROWDHUMAN_DIR
+annotations_dir = CROWHUMAN_ANNOTATIONS_DIR
 directories = [crowdhuman_dir, annotations_dir]
 # The filtered annotations will be stored in this file
-crowdhuman_annotations_path = global_variables.CROWDHUMAN_ANNOTATIONS_PATH
+crowdhuman_annotations_path = CROWDHUMAN_ANNOTATIONS_PATH
 
 # Creates the directories or recreates them
 for dyr in directories:
@@ -37,7 +34,7 @@ max_people_per_image = 5
 number_of_images = 0
 number_of_detections = 0
 annotations_filtered = ''
-with open(f'{global_variables.RAW_CROWDHUMAN_ANNOTATIONS_PATH}', 'r') as file:
+with open(f'{RAW_CROWDHUMAN_ANNOTATIONS_PATH}', 'r') as file:
     for row in file:
         json_obj = json.loads(row)
 
