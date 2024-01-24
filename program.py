@@ -4,7 +4,7 @@ from global_variables import *
 model = YOLO(MODEL)
 
 # Image reading and face detection
-path = '273271,1c50900088104e31.jpg'
+path = 'CAMINHO DA IMAGEM'
 img = cv.imread(path)
 results = model.predict(img, verbose=False)
 boxes = results[0].boxes
