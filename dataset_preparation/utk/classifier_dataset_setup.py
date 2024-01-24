@@ -1,8 +1,9 @@
 import os
 import random
 import shutil
+import global_variables
 
-utk = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'), 'UTK')
+utk = global_variables.RAW_UTK_PATH
 ethnicity = ["white", "black", "asian", "indian", "others"]
 age_group = ["0-2", "3-7", "8-12", "13-19", "20-36", "37-65", "66+"]
 data_max = 0
