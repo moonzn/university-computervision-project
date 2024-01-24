@@ -2,16 +2,16 @@ import torch
 from ultralytics import YOLO
 from ultralytics.utils import metrics
 import cv2 as cv
-import os
 import json
+from global_variables import *
 
 
 # Reading the annotation file and structuring it in a dictionary
 # The keys are the names of the images and the values are the coordinates of each bounding box
 def read_annotations_file():
     data = dict()
-    with open(CROWDHUMAN_ANNOTATIONS_PATH, 'r') as file:
-        for row in file:
+    with open(CROWDHUMAN_ANNOTATIONS_PATH, 'r') as f:
+        for row in f:
             json_obj = json.loads(row)
             id = json_obj['ID']
             box_list = json_obj['gtboxes']
@@ -26,20 +26,8 @@ def read_annotations_file():
     return data
 
 
-CROWDHUMAN_DIR = '../../../datasets/crowdhuman/dataset'
-CROWDHUMAN_ANNOTATIONS_PATH = '../../../datasets/crowdhuman/annotations/crowdhuman_annotations'
-MODEL = 'yolov8n-face.pt'  # 'yolov8m-face.pt'
-CONFIDENCE_THRESHOLD = 0.6  # Threshold for trust in bounding boxes
-IOU_THRESHOLD = 0.5  # Threshold for the IoU metric
-
 # Reading the annotations file
 annotations = read_annotations_file()
-
-#from ultralytics.models.yolo.detect import DetectionPredictor
-#args = dict(model=MODEL, source=CROWDHUMAN_DIR)
-#predictor = DetectionPredictor(overrides=args)
-#predictor.predict_cli()
-#exit(0)
 
 # Loading the model
 model = YOLO(MODEL)
@@ -86,6 +74,7 @@ for file in os.listdir(CROWDHUMAN_DIR):
     false_positives += torch.sum(max_values < IOU_THRESHOLD).item()
     total_images += 1
     total_boxes += len(img_boxes)
+    print(total_images)
 
 # Display of metrics in relation to the total bounding boxes of the entire dataset
 precision = true_positives / (true_positives + false_positives)

@@ -17,8 +17,15 @@ RAW_CROWDHUMAN_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'dataset_preparation\\c
 CROWDHUMAN_DIR = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\dataset')
 CROWHUMAN_ANNOTATIONS_DIR = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\annotations')
 
-# The filtered crowdhuman annotations will be stored in this file
+# The filtered CrowdHuman annotations will be stored in this file
 CROWDHUMAN_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\annotations\\crowdhuman_annotations.txt')
+
+# The Yolo face detection model
+MODEL = os.path.join(ROOT_DIR, 'models\\crowdhuman\\results\\yolov8n-face.pt')
+# Threshold for trust in bounding boxes
+CONFIDENCE_THRESHOLD = 0.6
+# Threshold for the IoU metric
+IOU_THRESHOLD = 0.5
 
 # ----------------------------------------------------------------------------------------------------------------------
 

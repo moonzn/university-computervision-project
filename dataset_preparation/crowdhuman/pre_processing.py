@@ -13,7 +13,7 @@ raw_annotations = global_variables.RAW_CROWDHUMAN_ANNOTATIONS_PATH
 
 # Throw error if there is no 'CrowdHuman' folder in the user's desktop
 if not os.path.exists(raw_crowdhuman_path):
-    exit(f'No dataset found in \'{global_variables.RAW_CROWDHUMAN_PATH}\'. Please place the dataset in the specified '
+    exit(f'No dataset found in \'{raw_crowdhuman_path}\'. Please place the dataset in the specified '
          f'path.')
 
 # Filtered versions will be created in these directories
