@@ -69,4 +69,5 @@ with open(f'{global_variables.RAW_CROWDHUMAN_ANNOTATIONS_PATH}', 'r') as file:
 with open(f'{crowdhuman_annotations_path}', 'w') as file:
     file.write(annotations_filtered.replace("'", "\""))
 
-print(f'Number of detections = {number_of_detections}')
+print(f'Number of images = {number_of_images}')
+print(f'Number of faces = {number_of_detections}')
