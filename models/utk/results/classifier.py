@@ -1,15 +1,21 @@
 import tensorflow as tf
 from keras import layers
 
-DATASET_PATH = "../../datasets/utk/dataset"
+DATASET_PATH = "../../../datasets/utk/dataset"
+TYPE = 0 # 0 = age / 1 = ethnicity
 SEED = 42  # Seed for split
 SPLIT = 0.3  # Fraction of images for validation
 
 labels = list()
-file = open("../../datasets/utk/annotations/annotations.txt", "r")
-for l in file:
-    age = int(l.split(',')[1].split(' ')[2])
-    labels.append(age)
+annots = open("../../../datasets/utk/annotations/annotations.txt", "r")
+for a in annots:
+    match TYPE:
+        case 0:
+            age = int(a.split(',')[1].split(' ')[2])
+            labels.append(age)
+        case 1:
+            ethn = int(a.split(',')[2].split(' ')[2])
+            labels.append(ethn)
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     DATASET_PATH,
@@ -17,7 +23,8 @@ train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     label_mode='int',
     validation_split=SPLIT,
     subset="both",
-    seed=SEED)
+    seed=SEED,
+    shuffle=True)
 
 model = tf.keras.models.Sequential([
     layers.Conv2D(filters=32, kernel_size=3, activation='relu', input_shape=(256, 256, 3)),
@@ -35,5 +42,5 @@ model = tf.keras.models.Sequential([
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-EPOCHS = 100
+EPOCHS = 15
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
