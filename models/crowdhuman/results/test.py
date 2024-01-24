@@ -32,6 +32,11 @@ max_ious = []
 false_positives, true_positives = 0, 0
 total_images, total_boxes = 0, 0
 
+# To analyse images one by one
+cv_images = []
+predicted_boxes = []
+annotated_boxes = []
+
 for file in os.listdir(CROWDHUMAN_DIR):
     # Image reading and face detection
     path = os.path.join(CROWDHUMAN_DIR, file)
@@ -51,13 +56,17 @@ for file in os.listdir(CROWDHUMAN_DIR):
     if len(prediction_boxes) == 0:
         continue
 
+    cv_images.append(img)
+
     prediction_boxes = sorted(prediction_boxes, key=lambda x: x[0])
     prediction_boxes = torch.tensor(prediction_boxes)
+    predicted_boxes.append(prediction_boxes)
 
     # Boxes of people's faces (ground truth)
     img_id, _ = os.path.splitext(file)
     img_boxes = annotations[img_id]
     img_boxes = torch.tensor(img_boxes)
+    annotated_boxes.append(img_boxes)
 
     # Calculate intersection-over-union (IoU) of boxes
     # The pairwise IoU values for every element in 'img_boxes' and 'prediction_boxes'
@@ -70,6 +79,10 @@ for file in os.listdir(CROWDHUMAN_DIR):
     total_images += 1
     total_boxes += len(img_boxes)
 
+print(len(cv_images))
+print(len(predicted_boxes))
+print(len(annotated_boxes))
+
 # Display of metrics in relation to the total bounding boxes of the entire dataset
 precision = true_positives / (true_positives + false_positives)
 recall = true_positives / total_boxes
@@ -80,3 +93,20 @@ print(f"Precision: {round(precision, 3)}"
       f" | Recall: {round(recall, 3)}"
       f" | F1-Score: {round(f1_score, 3)}"
       f" | Average IoU: {round(average_iou, 3)}")
+
+for idx in range(len(cv_images)):
+    img = cv_images[idx]
+    pred = predicted_boxes[idx]
+    annot = annotated_boxes[idx]
+
+    pred_color = (0, 179, 0)
+    pred_thickness = 3
+
+    annot_color = (179, 0, 179)
+    annot_thickness = 2
+
+    img = draw_bounding_boxes(img, pred, pred_color, pred_thickness)
+    img = draw_bounding_boxes(img, annot, annot_color, annot_thickness)
+
+    cv.imshow('image', img)
+    cv.waitKey(0)

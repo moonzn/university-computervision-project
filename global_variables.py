@@ -17,7 +17,8 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 # The CrowdHuman dataset should be placed in the user's desktop, in a folder named 'CrowdHuman'
 RAW_CROWDHUMAN_PATH = os.path.join(DESKTOP_PATH, 'CrowdHuman')
 # Annotations for this dataset
-RAW_CROWDHUMAN_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'dataset_preparation\\crowdhuman\\annotations\\annotation_train.odgt')
+RAW_CROWDHUMAN_ANNOTATIONS_PATH = os.path.join(ROOT_DIR,
+                                               'dataset_preparation\\crowdhuman\\annotations\\annotation_train.odgt')
 
 # Filtered versions will be created in these directories
 CROWDHUMAN_DIR = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\dataset')
@@ -46,3 +47,16 @@ UTK_ANNOTATIONS_DIR = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations')
 # The filtered UTK annotations will be stored in this file
 UTK_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\annotations\\utk_annotations.txt')
 
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+def draw_bounding_boxes(img, boxes, color, thickness):
+
+    for coords in boxes:
+        # Represents the top left corner of rectangle
+        start_point = (int(coords[0]), int(coords[1]))
+        # Represents the bottom right corner of rectangle
+        end_point = (int(coords[2]), int(coords[3]))
+
+        img = cv.rectangle(img, start_point, end_point, color, thickness)
+    return img
