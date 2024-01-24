@@ -37,7 +37,7 @@ def stats():
 
     lst.sort()
     global data_max
-    data_max = lst[1]
+    data_max = lst[8]
     print()
     print("The max number of photos per group for a balanced dataset is " + str(data_max))
 
@@ -66,26 +66,30 @@ def dataset_builder():
         shutil.rmtree("../../datasets/utk")
 
     os.makedirs("../../datasets/utk/dataset")
+    os.mkdir("../../datasets/utk/temp")
     os.mkdir("../../datasets/utk/annotations")
-    f = open("../../datasets/utk/annotations/annotations.txt", "x")
     for e in ethnicity:
         for a in age_group:
             dir = os.listdir("./pre-processed/" + e + "/" + a)
             random.shuffle(dir)
             if len(dir) < data_max:
                 for i in range(len(dir)):
-                    id = dir[i].split('_')[3]
-                    age = str(age_group_finder(int(dir[i].split('_')[0])))
-                    ethn = dir[i].split('_')[2]
-                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
-                    f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
+                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/temp")
             else:
                 for i in range(data_max):
-                    id = dir[i].split('_')[3]
-                    age = str(age_group_finder(int(dir[i].split('_')[0])))
-                    ethn = dir[i].split('_')[2]
-                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
-                    f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
+                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/temp")
+
+    f = open("../../datasets/utk/annotations/annotations.txt", "x")
+    dir = os.listdir("../../datasets/utk/temp")
+    random.shuffle(dir)
+    for file in dir:
+        id = file.split('_')[3]
+        age = str(age_group_finder(int(file.split('_')[0])))
+        ethn = file.split('_')[2]
+        shutil.copy("../../datasets/utk/temp/" + file, "../../datasets/utk/dataset")
+        f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
+
+    shutil.rmtree("../../datasets/utk/temp")
 
 
 pre_process()

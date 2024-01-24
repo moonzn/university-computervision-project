@@ -1,10 +1,9 @@
 import tensorflow as tf
 from keras import layers
 
-TRAIN_DATASET_PATH = "../../datasets/utk/dataset"
-VAL_DATASET_PATH = "../../datasets/utk/dataset"
+DATASET_PATH = "../../datasets/utk/dataset"
 SEED = 42  # Seed for split
-VAL_TEST_SPLIT = 0.5  # Fraction of images for validation
+SPLIT = 0.3  # Fraction of images for validation
 
 labels = list()
 file = open("../../datasets/utk/annotations/annotations.txt", "r")
@@ -12,17 +11,11 @@ for l in file:
     age = int(l.split(',')[1].split(' ')[2])
     labels.append(age)
 
-train_ds = tf.keras.utils.image_dataset_from_directory(
-    TRAIN_DATASET_PATH,
+train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
+    DATASET_PATH,
     labels=labels,
     label_mode='int',
-    seed=SEED)
-
-val_ds, test_ds = tf.keras.utils.image_dataset_from_directory(
-    VAL_DATASET_PATH,
-    labels=labels,
-    label_mode='int',
-    validation_split=VAL_TEST_SPLIT,
+    validation_split=SPLIT,
     subset="both",
     seed=SEED)
 
@@ -42,5 +35,5 @@ model = tf.keras.models.Sequential([
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-EPOCHS = 60
+EPOCHS = 100
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
