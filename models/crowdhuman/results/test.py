@@ -1,8 +1,3 @@
-import torch
-from ultralytics import YOLO
-from ultralytics.utils import metrics
-import cv2 as cv
-import json
 from global_variables import *
 
 
@@ -74,7 +69,6 @@ for file in os.listdir(CROWDHUMAN_DIR):
     false_positives += torch.sum(max_values < IOU_THRESHOLD).item()
     total_images += 1
     total_boxes += len(img_boxes)
-    print(total_images)
 
 # Display of metrics in relation to the total bounding boxes of the entire dataset
 precision = true_positives / (true_positives + false_positives)
