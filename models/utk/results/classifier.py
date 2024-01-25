@@ -66,7 +66,7 @@ model = tf.keras.models.Sequential([
     layers.Dense(7, activation='softmax'),
 ])
 
-model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.compile(loss='sparse_categorical_crossentropy', optimizer=tf.keras.optimizers.Nadam(), metrics=['accuracy'])
 
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
 
