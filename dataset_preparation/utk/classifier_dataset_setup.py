@@ -75,7 +75,7 @@ def dataset_builder():
                     age = str(age_group_finder(int(dir[i].split('_')[0])))
                     ethn = dir[i].split('_')[2]
                     shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
-                    f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
+                    f.write("{\"ID\": \"" + id + "\", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
             else:
                 for i in range(data_max):
                     id = dir[i].split('_')[3]
