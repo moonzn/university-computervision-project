@@ -1,9 +1,12 @@
 from global_variables import *
 
-TYPE = "ethn"  # age or ethn
+TYPE = "age"  # age or ethn
+BATCH_SIZE = 100
+IMG_HEIGHT = 128
+IMG_WIDTH = 128
 SEED = 42  # Seed for split
 SPLIT = 0.3  # Fraction of images for validation
-EPOCHS = 30
+EPOCHS = 100
 
 # Reading the annotation file and structuring it in a dictionary
 data = dict()
@@ -23,7 +26,7 @@ for (_, _, files) in os.walk(UTK_DATASET_DIR, topdown=True):
         labels.append(val)
 
     print(files)
-print(labels)
+    print(labels)
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     UTK_DATASET_DIR,
@@ -36,7 +39,9 @@ train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
 
 # Define, compile and train model
 model = tf.keras.models.Sequential([
-    layers.Conv2D(filters=32, kernel_size=3, activation='relu', input_shape=(256, 256, 3)),
+    layers.Rescaling(1./255, offset=-1, input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
+    YOLO(MODEL),
+    layers.Conv2D(filters=32, kernel_size=3, activation='relu'),
     layers.AveragePooling2D(pool_size=(2, 2)),
     layers.Conv2D(filters=64, kernel_size=3, activation='relu'),
     layers.AveragePooling2D(pool_size=(2, 2)),
@@ -45,14 +50,16 @@ model = tf.keras.models.Sequential([
     layers.Conv2D(filters=256, kernel_size=3, activation='relu'),
     layers.AveragePooling2D(pool_size=(2, 2)),
     layers.GlobalAveragePooling2D(),
+    layers.Flatten(),
     layers.Dense(132, activation='relu'),
     layers.Dense(7, activation='softmax'),
 ])
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
 
 # The trained model is saved to a file.
 if not os.path.exists("./models"):
     os.mkdir("./models")
-model.save("./models/" + TYPE + ".keras")
+model.save("./models/" + TYPE + "_yolo.keras")

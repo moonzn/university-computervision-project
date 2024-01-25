@@ -53,6 +53,7 @@ def pre_process():
             ethn = int(filename.split('_')[2])
             age = int(filename.split('_')[0])
             shutil.copy(RAW_UTK_PATH + '\\' + filename, UTK_PREPROCESSED_DIR + '\\' + ethnicity[ethn] + '\\' + age_group[age_group_finder(age)])
+
         stats()
 
 
