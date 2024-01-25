@@ -62,9 +62,9 @@ def dataset_builder():
     if os.path.exists("../../datasets/utk"):
         shutil.rmtree("../../datasets/utk")
 
-    os.makedirs("../../datasets/utk/dataset")
-    os.mkdir("../../datasets/utk/annotations")
-    f = open("../../datasets/utk/annotations/annotations.txt", "x")
+    os.makedirs(UTK_DIR)
+    os.mkdir(UTK_ANNOTATIONS_DIR)
+    f = open(UTK_ANNOTATIONS_PATH, "x")
     for e in ethnicity:
         for a in age_group:
             dir = os.listdir("./pre-processed/" + e + "/" + a)
@@ -82,7 +82,7 @@ def dataset_builder():
                     age = str(age_group_finder(int(dir[i].split('_')[0])))
                     ethn = dir[i].split('_')[2]
                     shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
-                    f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
+                    f.write("{\"ID\": \"" + id + "\", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
 
 
 pre_process()

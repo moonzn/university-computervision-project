@@ -46,7 +46,7 @@ UTK_DIR = os.path.join(ROOT_DIR, 'datasets\\utk\\dataset')
 UTK_ANNOTATIONS_DIR = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations')
 
 # The filtered UTK annotations will be stored in this file
-UTK_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\annotations\\utk_annotations.txt')
+UTK_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations\\utk_annotations.txt')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
