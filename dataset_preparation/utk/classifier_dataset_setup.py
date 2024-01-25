@@ -48,13 +48,11 @@ def pre_process():
             os.mkdir(UTK_PREPROCESSED_DIR + '\\' + e)
             for a in age_group:
                 os.mkdir(UTK_PREPROCESSED_DIR + '\\' + e + '\\' + a)
-                print(UTK_PREPROCESSED_DIR + "\\" + e + "\\" + a)
 
         for filename in os.listdir(RAW_UTK_PATH):
             ethn = int(filename.split('_')[2])
             age = int(filename.split('_')[0])
             shutil.copy(RAW_UTK_PATH + '\\' + filename, UTK_PREPROCESSED_DIR + '\\' + ethnicity[ethn] + '\\' + age_group[age_group_finder(age)])
-            print(RAW_UTK_PATH + '\\' + filename, UTK_PREPROCESSED_DIR + "\\" + ethnicity[ethn] + "\\" + age_group[age_group_finder(age)])
         stats()
 
 
@@ -77,10 +75,9 @@ def dataset_builder():
 
     f = open(UTK_ANNOTATIONS_PATH, "x")
     for file in os.listdir(UTK_DATASET_DIR):
-        id = file.split('_')[3]
         age = str(age_group_finder(int(file.split('_')[0])))
         ethn = file.split('_')[2]
-        f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
+        f.write("{\"ID\": \"" + file + "\", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
 
 
 pre_process()

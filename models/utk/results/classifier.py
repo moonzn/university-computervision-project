@@ -1,26 +1,28 @@
-import tensorflow as tf
-from keras import layers
 from global_variables import *
 
-tf.autograph.set_verbosity(level=0, alsologtostdout=False)
-
-DATASET_PATH = "../../../datasets/utk/dataset"
 TYPE = "ethn"  # age or ethn
 SEED = 42  # Seed for split
 SPLIT = 0.3  # Fraction of images for validation
 
-labels = list()
-annots = open("../../../datasets/utk/annotations/annotations.txt", "r")
-for a in annots:
+# Reading the annotation file and structuring it in a dictionary
+data = dict()
+for a in open(UTK_ANNOTATIONS_PATH, "r"):
+    json_obj = json.loads(a)
+    id = json_obj['ID']
     if TYPE == "age":
-        age = int(a.split(',')[1].split(' ')[2])
-        labels.append(age)
+        data[id] = json_obj['AGE']
     else:
-        ethn = int(a.split(',')[2].split(' ')[2].removesuffix('}\n'))
-        labels.append(ethn)
+        data[id] = json_obj['ETHN']
+
+# Save the labels in alphanumeric order of the images in the dataset directory
+labels = []
+for (_, _, files) in os.walk(UTK_DATASET_DIR, topdown=True):
+    for fn in files:
+        val = data[fn]
+        labels.append(val)
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
-    DATASET_PATH,
+    UTK_DATASET_DIR,
     labels=labels,
     label_mode='int',
     validation_split=SPLIT,
@@ -44,9 +46,10 @@ model = tf.keras.models.Sequential([
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-EPOCHS = 100
+EPOCHS = 30
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
 
+# The trained model is saved to a file.
 if not os.path.exists("./models"):
     os.mkdir("./models")
 model.save("./models/" + TYPE + ".keras")
