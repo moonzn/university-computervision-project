@@ -64,25 +64,23 @@ def dataset_builder():
 
     os.makedirs("../../datasets/utk/dataset")
     os.mkdir("../../datasets/utk/annotations")
-    f = open("../../datasets/utk/annotations/annotations.txt", "x")
     for e in ethnicity:
         for a in age_group:
             dir = os.listdir("./pre-processed/" + e + "/" + a)
             random.shuffle(dir)
             if len(dir) < data_max:
                 for i in range(len(dir)):
-                    id = dir[i].split('_')[3]
-                    age = str(age_group_finder(int(dir[i].split('_')[0])))
-                    ethn = dir[i].split('_')[2]
                     shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
-                    f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
             else:
                 for i in range(data_max):
-                    id = dir[i].split('_')[3]
-                    age = str(age_group_finder(int(dir[i].split('_')[0])))
-                    ethn = dir[i].split('_')[2]
                     shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
-                    f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
+
+    f = open("../../datasets/utk/annotations/annotations.txt", "x")
+    for file in os.listdir("../../datasets/utk/dataset"):
+        id = file.split('_')[3]
+        age = str(age_group_finder(int(file.split('_')[0])))
+        ethn = file.split('_')[2]
+        f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
 
 
 pre_process()
