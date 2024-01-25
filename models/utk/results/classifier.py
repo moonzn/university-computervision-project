@@ -3,6 +3,7 @@ from global_variables import *
 TYPE = "ethn"  # age or ethn
 SEED = 42  # Seed for split
 SPLIT = 0.3  # Fraction of images for validation
+EPOCHS = 30
 
 # Reading the annotation file and structuring it in a dictionary
 data = dict()
@@ -21,6 +22,9 @@ for (_, _, files) in os.walk(UTK_DATASET_DIR, topdown=True):
         val = data[fn]
         labels.append(val)
 
+    print(files)
+print(labels)
+
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     UTK_DATASET_DIR,
     labels=labels,
@@ -30,6 +34,7 @@ train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     seed=SEED,
     shuffle=True)
 
+# Define, compile and train model
 model = tf.keras.models.Sequential([
     layers.Conv2D(filters=32, kernel_size=3, activation='relu', input_shape=(256, 256, 3)),
     layers.AveragePooling2D(pool_size=(2, 2)),
@@ -45,8 +50,6 @@ model = tf.keras.models.Sequential([
 ])
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-EPOCHS = 30
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
 
 # The trained model is saved to a file.
