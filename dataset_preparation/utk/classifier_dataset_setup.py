@@ -1,6 +1,5 @@
 from global_variables import *
 
-utk = RAW_UTK_PATH
 ethnicity = ["white", "black", "asian", "indian", "others"]
 age_group = ["0-2", "3-7", "8-12", "13-19", "20-36", "37-65", "66+"]
 data_max = 0
@@ -28,7 +27,7 @@ def stats():
     for e in ethnicity:
         print()
         for a in age_group:
-            dir = os.listdir("./pre-processed/" + e + "/" + a)
+            dir = os.listdir(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a)
             lst.append(len(dir))
             print(str(len(dir)) + " people of " + e.upper() + " ethnicity in the age group of " + a)
 
@@ -40,43 +39,44 @@ def stats():
 
 
 def pre_process():
-    if os.path.exists(utk):
-        if os.path.exists("./pre-processed"):
-            shutil.rmtree("./pre-processed")
+    if os.path.exists(RAW_UTK_PATH):
+        if os.path.exists(UTK_PREPROCESSED_DIR):
+            shutil.rmtree(UTK_PREPROCESSED_DIR)
 
-        os.mkdir("./pre-processed")
+        os.mkdir(UTK_PREPROCESSED_DIR)
         for e in ethnicity:
-            os.mkdir("./pre-processed/" + e)
+            os.mkdir(UTK_PREPROCESSED_DIR + '\\' + e)
             for a in age_group:
-                os.mkdir("./pre-processed/" + e + "/" + a)
+                os.mkdir(UTK_PREPROCESSED_DIR + '\\' + e + '\\' + a)
+                print(UTK_PREPROCESSED_DIR + "\\" + e + "\\" + a)
 
-        for filename in os.listdir(utk):
+        for filename in os.listdir(RAW_UTK_PATH):
             ethn = int(filename.split('_')[2])
             age = int(filename.split('_')[0])
-            shutil.copy(utk + '/' + filename, "./pre-processed/" + ethnicity[ethn] + "/" + age_group[age_group_finder(age)])
-
+            shutil.copy(RAW_UTK_PATH + '\\' + filename, UTK_PREPROCESSED_DIR + '\\' + ethnicity[ethn] + '\\' + age_group[age_group_finder(age)])
+            print(RAW_UTK_PATH + '\\' + filename, UTK_PREPROCESSED_DIR + "\\" + ethnicity[ethn] + "\\" + age_group[age_group_finder(age)])
         stats()
 
 
 def dataset_builder():
-    if os.path.exists("../../datasets/utk"):
-        shutil.rmtree("../../datasets/utk")
+    if os.path.exists(UTK_DIR):
+        shutil.rmtree(UTK_DIR)
 
-    os.makedirs("../../datasets/utk/dataset")
-    os.mkdir("../../datasets/utk/annotations")
+    os.makedirs(UTK_DATASET_DIR)
+    os.mkdir(UTK_ANNOTATIONS_DIR)
     for e in ethnicity:
         for a in age_group:
-            dir = os.listdir("./pre-processed/" + e + "/" + a)
+            dir = os.listdir(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a)
             random.shuffle(dir)
             if len(dir) < data_max:
                 for i in range(len(dir)):
-                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
+                    shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
             else:
                 for i in range(data_max):
-                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
+                    shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
 
-    f = open("../../datasets/utk/annotations/annotations.txt", "x")
-    for file in os.listdir("../../datasets/utk/dataset"):
+    f = open(UTK_ANNOTATIONS_PATH, "x")
+    for file in os.listdir(UTK_DATASET_DIR):
         id = file.split('_')[3]
         age = str(age_group_finder(int(file.split('_')[0])))
         ethn = file.split('_')[2]
