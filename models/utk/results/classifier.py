@@ -5,7 +5,7 @@ from global_variables import *
 tf.autograph.set_verbosity(level=0, alsologtostdout=False)
 
 DATASET_PATH = "../../../datasets/utk/dataset"
-TYPE = "age"  # age or ethn
+TYPE = "ethn"  # age or ethn
 SEED = 42  # Seed for split
 SPLIT = 0.3  # Fraction of images for validation
 
@@ -16,7 +16,7 @@ for a in annots:
         age = int(a.split(',')[1].split(' ')[2])
         labels.append(age)
     else:
-        ethn = int(a.split(',')[2].split(' ')[2])
+        ethn = int(a.split(',')[2].split(' ')[2].removesuffix('}\n'))
         labels.append(ethn)
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
@@ -44,7 +44,7 @@ model = tf.keras.models.Sequential([
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-EPOCHS = 15
+EPOCHS = 100
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
 
 if not os.path.exists("./models"):
