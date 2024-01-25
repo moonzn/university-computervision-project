@@ -1,7 +1,6 @@
 from global_variables import *
 
 TYPE = "age"  # age or ethn
-BATCH_SIZE = 100
 IMG_HEIGHT = 128
 IMG_WIDTH = 128
 SEED = 42  # Seed for split
@@ -25,9 +24,6 @@ for (_, _, files) in os.walk(UTK_DATASET_DIR, topdown=True):
         val = data[fn]
         labels.append(val)
 
-    print(files)
-    print(labels)
-
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     UTK_DATASET_DIR,
     labels=labels,
@@ -35,12 +31,12 @@ train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     validation_split=SPLIT,
     subset="both",
     seed=SEED,
+    image_size=(IMG_HEIGHT, IMG_WIDTH),
     shuffle=True)
 
 # Define, compile and train model
 model = tf.keras.models.Sequential([
     layers.Rescaling(1./255, offset=-1, input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
-    YOLO(MODEL),
     layers.Conv2D(filters=32, kernel_size=3, activation='relu'),
     layers.AveragePooling2D(pool_size=(2, 2)),
     layers.Conv2D(filters=64, kernel_size=3, activation='relu'),
@@ -62,4 +58,4 @@ history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
 # The trained model is saved to a file.
 if not os.path.exists("./models"):
     os.mkdir("./models")
-model.save("./models/" + TYPE + "_yolo.keras")
+model.save("./models/" + TYPE + ".keras")
