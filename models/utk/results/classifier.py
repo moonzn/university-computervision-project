@@ -1,6 +1,10 @@
 from global_variables import *
 
 TYPE = "age"  # age or ethn
+if TYPE == "age":
+    NUM_CLASSES = 7
+else:
+    NUM_CLASSES = 5
 IMG_HEIGHT = 128
 IMG_WIDTH = 128
 SEED = 42  # Seed for split
@@ -63,7 +67,7 @@ model = tf.keras.models.Sequential([
     layers.Dense(256, activation='relu'),
     layers.BatchNormalization(),
     layers.Dropout(0.3),
-    layers.Dense(7, activation='softmax'),
+    layers.Dense(NUM_CLASSES, activation='softmax'),
 ])
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer=tf.keras.optimizers.Nadam(), metrics=['accuracy'])

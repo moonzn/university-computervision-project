@@ -1,8 +1,9 @@
 from global_variables import *
 
-ethnicity = ["white", "black", "asian", "indian", "others"]
-age_group = ["0-2", "3-7", "8-12", "13-19", "20-36", "37-65", "66+"]
-data_max = 0
+ETHNICITY = ["white", "black", "asian", "indian", "others"]
+AGE_GROUP = ["0-2", "3-7", "8-12", "13-19", "20-36", "37-65", "66+"]
+TYPE = "blncd"  # age, ethn or blncd (balanced)
+DATA_MAX = 0
 
 
 def age_group_finder(age):
@@ -24,18 +25,42 @@ def age_group_finder(age):
 
 def stats():
     lst = list()
-    for e in ethnicity:
-        print()
-        for a in age_group:
+    total_age = [0, 0, 0, 0, 0, 0, 0]
+    total_ethn = [0, 0, 0, 0, 0]
+    for e in ETHNICITY:
+        if TYPE == "blncd":
+            print()
+        for a in AGE_GROUP:
             dir = os.listdir(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a)
-            lst.append(len(dir))
-            print(str(len(dir)) + " people of " + e.upper() + " ethnicity in the age group of " + a)
-
-    lst.sort()
-    global data_max
-    data_max = lst[8]
-    print()
-    print("The max number of photos per group for a balanced dataset is " + str(data_max))
+            match TYPE:
+                case "blncd":
+                    lst.append(len(dir))
+                    print(str(len(dir)) + " people of " + e.upper() + " ethnicity in the age group of " + a)
+                case "age":
+                    total_age[AGE_GROUP.index(a)] += len(dir)
+                case "ethn":
+                    total_ethn[ETHNICITY.index(e)] += len(dir)
+    global DATA_MAX
+    match TYPE:
+        case "blncd":
+            lst.sort()
+            DATA_MAX = lst[8]
+            print()
+            print("The max number of photos per group for a true balanced dataset is " + str(DATA_MAX))
+        case "age":
+            for i in range(len(total_age)):
+                print(str(total_age[i]) + " people in the age group of " + AGE_GROUP[i])
+            total_age.sort()
+            DATA_MAX = total_age[0]
+            print()
+            print("The max number of photos per group for a age balanced dataset is " + str(DATA_MAX))
+        case "ethn":
+            for i in range(len(total_ethn)):
+                print(str(total_ethn[i]) + " people of " + ETHNICITY[i].upper() + " ethnicity")
+            total_ethn.sort()
+            DATA_MAX = total_ethn[0]
+            print()
+            print("The max number of photos per group for a ethnicity balanced dataset is " + str(DATA_MAX))
 
 
 def pre_process():
@@ -44,15 +69,15 @@ def pre_process():
             shutil.rmtree(UTK_PREPROCESSED_DIR)
 
         os.mkdir(UTK_PREPROCESSED_DIR)
-        for e in ethnicity:
+        for e in ETHNICITY:
             os.mkdir(UTK_PREPROCESSED_DIR + '\\' + e)
-            for a in age_group:
+            for a in AGE_GROUP:
                 os.mkdir(UTK_PREPROCESSED_DIR + '\\' + e + '\\' + a)
 
         for filename in os.listdir(RAW_UTK_PATH):
             ethn = int(filename.split('_')[2])
             age = int(filename.split('_')[0])
-            shutil.copy(RAW_UTK_PATH + '\\' + filename, UTK_PREPROCESSED_DIR + '\\' + ethnicity[ethn] + '\\' + age_group[age_group_finder(age)])
+            shutil.copy(RAW_UTK_PATH + '\\' + filename, UTK_PREPROCESSED_DIR + '\\' + ETHNICITY[ethn] + '\\' + AGE_GROUP[age_group_finder(age)])
 
         stats()
 
@@ -63,16 +88,32 @@ def dataset_builder():
 
     os.makedirs(UTK_DATASET_DIR)
     os.mkdir(UTK_ANNOTATIONS_DIR)
-    for e in ethnicity:
-        for a in age_group:
+    for e in ETHNICITY:
+        for a in AGE_GROUP:
             dir = os.listdir(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a)
             random.shuffle(dir)
-            if len(dir) < data_max:
-                for i in range(len(dir)):
-                    shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
-            else:
-                for i in range(data_max):
-                    shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+            match TYPE:
+                case "blncd":
+                    if len(dir) < DATA_MAX:
+                        for i in range(len(dir)):
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                    else:
+                        for i in range(DATA_MAX):
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                case "age":
+                    if len(dir) < ceil(DATA_MAX / 5):
+                        for i in range(len(dir)):
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                    else:
+                        for i in range(ceil(DATA_MAX / 5)):
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                case "ethn":
+                    if len(dir) < ceil(DATA_MAX / 7):
+                        for i in range(len(dir)):
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                    else:
+                        for i in range(ceil(DATA_MAX / 7)):
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
 
     f = open(UTK_ANNOTATIONS_PATH, "x")
     for file in os.listdir(UTK_DATASET_DIR):

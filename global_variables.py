@@ -9,6 +9,7 @@ import torch
 import tensorflow as tf
 from keras import layers
 import matplotlib.pyplot as plt
+from math import ceil
 
 # User's Desktop path
 DESKTOP_PATH = os.path.join(os.environ['USERPROFILE'], 'Desktop')
