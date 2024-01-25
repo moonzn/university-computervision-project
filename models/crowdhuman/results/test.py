@@ -1,6 +1,5 @@
 from global_variables import *
 
-
 # Reading the annotation file and structuring it in a dictionary
 # The keys are the names of the images and the values are the coordinates of each bounding box
 def read_annotations_file():
