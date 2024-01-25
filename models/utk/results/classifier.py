@@ -4,7 +4,7 @@ TYPE = "age"  # age or ethn
 IMG_HEIGHT = 128
 IMG_WIDTH = 128
 SEED = 42  # Seed for split
-SPLIT = 0.3  # Fraction of images for validation
+SPLIT = 0.2  # Fraction of images for validation
 EPOCHS = 100
 
 # Reading the annotation file and structuring it in a dictionary
@@ -36,24 +36,61 @@ train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
 
 # Define, compile and train model
 model = tf.keras.models.Sequential([
-    layers.Rescaling(1./255, offset=-1, input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
-    layers.Conv2D(filters=32, kernel_size=3, activation='relu'),
-    layers.AveragePooling2D(pool_size=(2, 2)),
+    layers.Rescaling(2. / 255, offset=-1, input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
+    layers.RandomFlip("vertical"),
+    layers.RandomRotation(0.1),
     layers.Conv2D(filters=64, kernel_size=3, activation='relu'),
-    layers.AveragePooling2D(pool_size=(2, 2)),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D(pool_size=(2, 2)),
+    layers.Conv2D(filters=64, kernel_size=3, activation='relu'),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D(pool_size=(2, 2)),
+    layers.Dropout(0.3),
     layers.Conv2D(filters=128, kernel_size=3, activation='relu'),
-    layers.AveragePooling2D(pool_size=(2, 2)),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D(pool_size=(2, 2)),
+    layers.Dropout(0.3),
     layers.Conv2D(filters=256, kernel_size=3, activation='relu'),
-    layers.AveragePooling2D(pool_size=(2, 2)),
-    layers.GlobalAveragePooling2D(),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D(pool_size=(2, 2)),
+    layers.Conv2D(filters=256, kernel_size=3, activation='relu'),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D(pool_size=(2, 2)),
     layers.Flatten(),
-    layers.Dense(132, activation='relu'),
+    layers.Dense(256, activation='relu'),
+    layers.BatchNormalization(),
+    layers.Dropout(0.3),
+    layers.Dense(256, activation='relu'),
+    layers.BatchNormalization(),
+    layers.Dropout(0.3),
     layers.Dense(7, activation='softmax'),
 ])
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
+
+plt.figure(num=1)
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'val'], loc="upper left")
+plt.grid(True, ls='--')
+plt.savefig("./models/" + TYPE + "_accuracy.png")
+
+plt.figure(num=2)
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'val'], loc="upper right")
+plt.grid(True, ls='--')
+plt.savefig("./models/" + TYPE + "_loss.png")
+
+plt.show()
 
 # The trained model is saved to a file.
 if not os.path.exists("./models"):
