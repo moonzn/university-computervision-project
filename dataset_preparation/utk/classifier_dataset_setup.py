@@ -62,7 +62,7 @@ def dataset_builder():
     if os.path.exists("../../datasets/utk"):
         shutil.rmtree("../../datasets/utk")
 
-    os.makedirs("../../datasets/utk/dataset/images")
+    os.makedirs("../../datasets/utk/dataset")
     os.mkdir("../../datasets/utk/annotations")
     f = open("../../datasets/utk/annotations/annotations.txt", "x")
     for e in ethnicity:
@@ -74,14 +74,14 @@ def dataset_builder():
                     id = dir[i].split('_')[3]
                     age = str(age_group_finder(int(dir[i].split('_')[0])))
                     ethn = dir[i].split('_')[2]
-                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset/images")
+                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
                     f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
             else:
                 for i in range(data_max):
                     id = dir[i].split('_')[3]
                     age = str(age_group_finder(int(dir[i].split('_')[0])))
                     ethn = dir[i].split('_')[2]
-                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset/images")
+                    shutil.copy("./pre-processed/" + e + "/" + a + "/" + dir[i], "../../datasets/utk/dataset")
                     f.write("{\"ID\": " + id + ", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
 
 

@@ -1,10 +1,11 @@
-import os
-import shutil
 import tensorflow as tf
 from keras import layers
+from global_variables import *
+
+tf.autograph.set_verbosity(level=0, alsologtostdout=False)
 
 DATASET_PATH = "../../../datasets/utk/dataset"
-TYPE = "age" # age or ethn
+TYPE = "age"  # age or ethn
 SEED = 42  # Seed for split
 SPLIT = 0.3  # Fraction of images for validation
 
