@@ -1,21 +1,22 @@
+import os
+import shutil
 import tensorflow as tf
 from keras import layers
 
 DATASET_PATH = "../../../datasets/utk/dataset"
-TYPE = 0 # 0 = age / 1 = ethnicity
+TYPE = "age" # age or ethn
 SEED = 42  # Seed for split
 SPLIT = 0.3  # Fraction of images for validation
 
 labels = list()
 annots = open("../../../datasets/utk/annotations/annotations.txt", "r")
 for a in annots:
-    match TYPE:
-        case 0:
-            age = int(a.split(',')[1].split(' ')[2])
-            labels.append(age)
-        case 1:
-            ethn = int(a.split(',')[2].split(' ')[2])
-            labels.append(ethn)
+    if TYPE == "age":
+        age = int(a.split(',')[1].split(' ')[2])
+        labels.append(age)
+    else:
+        ethn = int(a.split(',')[2].split(' ')[2])
+        labels.append(ethn)
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     DATASET_PATH,
@@ -44,3 +45,7 @@ model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=
 
 EPOCHS = 15
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
+
+if not os.path.exists("./models"):
+    os.mkdir("./models")
+model.save("./models/" + TYPE + ".keras")
