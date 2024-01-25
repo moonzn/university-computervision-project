@@ -101,7 +101,6 @@ for idx in range(len(cv_images)):
 
     pred_color = (0, 179, 0)
     pred_thickness = 3
-
     annot_color = (179, 0, 179)
     annot_thickness = 2
 

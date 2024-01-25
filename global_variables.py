@@ -1,6 +1,7 @@
 import os
 import shutil
 import json
+import random
 import cv2 as cv
 from ultralytics import YOLO
 from ultralytics.utils import metrics
@@ -51,12 +52,11 @@ UTK_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\annotations
 # ----------------------------------------------------------------------------------------------------------------------
 
 def draw_bounding_boxes(img, boxes, color, thickness):
-
     for coords in boxes:
         # Represents the top left corner of rectangle
         start_point = (int(coords[0]), int(coords[1]))
         # Represents the bottom right corner of rectangle
         end_point = (int(coords[2]), int(coords[3]))
-
         img = cv.rectangle(img, start_point, end_point, color, thickness)
+
     return img
