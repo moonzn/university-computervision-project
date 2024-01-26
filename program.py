@@ -20,7 +20,7 @@ age_classifier = tf.keras.models.load_model(AGE_MODEL)
 # ethnicity_classifier = tf.keras.models.load_model(ETHNICITY_MODEL)
 
 # Image reading and face detection
-path = '273271,1c50900088104e31.jpg'  # 'CAMINHO DA IMAGEM'
+path = 'CAMINHO DA IMAGEM'
 img = cv.imread(path)
 results = face_detector.predict(img, verbose=False)
 boxes = results[0].boxes
