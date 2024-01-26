@@ -7,7 +7,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 # -----------------------------------------------------------------------------------------------------
 # Read and prepare dataset
 
-TYPE = "age"  # age or ethn
+TYPE = "ethn"  # age or ethn
 DATASET = "blncd" # age, ethn or blncd
 NUM_CLASSES = 7 if TYPE == "age" else 5
 IMG_HEIGHT = 128
@@ -40,11 +40,13 @@ train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     image_size=(IMG_HEIGHT, IMG_WIDTH),
     shuffle=True)
 
+callback = tf.keras.callbacks.EarlyStopping(monitor="val_loss", mode="min", patience=10)
+
 # Define, compile and train model
 model = tf.keras.models.Sequential([
     layers.Rescaling(2. / 255, offset=-1, input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
-    layers.RandomFlip("vertical"),
-    layers.RandomRotation(0.1),
+    layers.RandomFlip("horizontal_and_vertical"),
+    layers.RandomRotation(0.125),
     layers.Conv2D(filters=64, kernel_size=3, activation='relu'),
     layers.BatchNormalization(),
     layers.MaxPooling2D(pool_size=(2, 2)),
@@ -62,6 +64,7 @@ model = tf.keras.models.Sequential([
     layers.Conv2D(filters=256, kernel_size=3, activation='relu'),
     layers.BatchNormalization(),
     layers.MaxPooling2D(pool_size=(2, 2)),
+    layers.Dropout(0.5),
     layers.Flatten(),
     layers.Dense(256, activation='relu'),
     layers.BatchNormalization(),
@@ -73,8 +76,8 @@ model = tf.keras.models.Sequential([
 ])
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer=tf.keras.optimizers.Nadam(), metrics=['accuracy'])
-history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
 
+history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds, callbacks=[callback])
 
 if not os.path.exists("./models"):
     os.mkdir("./models")

@@ -46,7 +46,7 @@ def stats():
     match TYPE:
         case "blncd":
             lst.sort()
-            DATA_MAX = lst[8]
+            DATA_MAX = lst[ceil((len(lst) / 2) - 1)]
             print()
             print("The max number of photos per group for a true balanced dataset is " + str(DATA_MAX))
         case "age":
@@ -91,7 +91,8 @@ def dataset_builder():
 
     if os.path.exists(UTK_DATASET_DIR + '\\' + TYPE):
         shutil.rmtree(UTK_DATASET_DIR + '\\' + TYPE)
-        os.remove(UTK_ANNOTATIONS_PATH.split('.')[0] + '_' + TYPE + '.' + UTK_ANNOTATIONS_PATH.split('.')[1])
+        if os.path.exists(UTK_ANNOTATIONS_PATH.split('.')[0] + '_' + TYPE + '.' + UTK_ANNOTATIONS_PATH.split('.')[1]):
+            os.remove(UTK_ANNOTATIONS_PATH.split('.')[0] + '_' + TYPE + '.' + UTK_ANNOTATIONS_PATH.split('.')[1])
 
     os.mkdir(UTK_DATASET_DIR + '\\' + TYPE)
     for e in ETHNICITY:
