@@ -1,3 +1,5 @@
+import os.path
+
 from global_variables import *
 
 ETHNICITY = ["white", "black", "asian", "indian", "others"]
@@ -68,6 +70,10 @@ def pre_process():
         if os.path.exists(UTK_PREPROCESSED_DIR):
             shutil.rmtree(UTK_PREPROCESSED_DIR)
 
+        if not os.path.exists(UTK_DATASET_DIR):
+            os.makedirs(UTK_DATASET_DIR)
+            os.mkdir(UTK_ANNOTATIONS_DIR)
+
         os.mkdir(UTK_PREPROCESSED_DIR)
         for e in ETHNICITY:
             os.mkdir(UTK_PREPROCESSED_DIR + '\\' + e)
@@ -79,15 +85,15 @@ def pre_process():
             age = int(filename.split('_')[0])
             shutil.copy(RAW_UTK_PATH + '\\' + filename, UTK_PREPROCESSED_DIR + '\\' + ETHNICITY[ethn] + '\\' + AGE_GROUP[age_group_finder(age)])
 
-        stats()
-
 
 def dataset_builder():
-    if os.path.exists(UTK_DIR):
-        shutil.rmtree(UTK_DIR)
+    stats()
 
-    os.makedirs(UTK_DATASET_DIR)
-    os.mkdir(UTK_ANNOTATIONS_DIR)
+    if os.path.exists(UTK_DATASET_DIR + '\\' + TYPE):
+        shutil.rmtree(UTK_DATASET_DIR + '\\' + TYPE)
+        os.remove(UTK_ANNOTATIONS_PATH.split('.')[0] + '_' + TYPE + '.' + UTK_ANNOTATIONS_PATH.split('.')[1])
+
+    os.mkdir(UTK_DATASET_DIR + '\\' + TYPE)
     for e in ETHNICITY:
         for a in AGE_GROUP:
             dir = os.listdir(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a)
@@ -96,27 +102,27 @@ def dataset_builder():
                 case "blncd":
                     if len(dir) < DATA_MAX:
                         for i in range(len(dir)):
-                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR + '\\' + TYPE)
                     else:
                         for i in range(DATA_MAX):
-                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR + '\\' + TYPE)
                 case "age":
                     if len(dir) < ceil(DATA_MAX / 5):
                         for i in range(len(dir)):
-                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR + '\\' + TYPE)
                     else:
                         for i in range(ceil(DATA_MAX / 5)):
-                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR + '\\' + TYPE)
                 case "ethn":
                     if len(dir) < ceil(DATA_MAX / 7):
                         for i in range(len(dir)):
-                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR + '\\' + TYPE)
                     else:
                         for i in range(ceil(DATA_MAX / 7)):
-                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR)
+                            shutil.copy(UTK_PREPROCESSED_DIR + '\\' + e + "\\" + a + "\\" + dir[i], UTK_DATASET_DIR + '\\' + TYPE)
 
-    f = open(UTK_ANNOTATIONS_PATH, "x")
-    for file in os.listdir(UTK_DATASET_DIR):
+    f = open(UTK_ANNOTATIONS_PATH.split('.')[0] + '_' + TYPE + '.' + UTK_ANNOTATIONS_PATH.split('.')[1], "x")
+    for file in os.listdir(UTK_DATASET_DIR + '\\' + TYPE):
         age = str(age_group_finder(int(file.split('_')[0])))
         ethn = file.split('_')[2]
         f.write("{\"ID\": \"" + file + "\", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
