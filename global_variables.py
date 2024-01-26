@@ -8,7 +8,9 @@ from ultralytics.utils import metrics
 import torch
 import tensorflow as tf
 from keras import layers
+import logging
 import matplotlib.pyplot as plt
+from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, confusion_matrix
 from math import ceil
 
 # User's Desktop path
@@ -58,6 +60,9 @@ UTK_ANNOTATIONS_DIR = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations')
 # The filtered UTK annotations will be stored in this file
 UTK_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations\\utk_annotations.txt')
 
+# Age and ethnicity classification models
+AGE_MODEL = os.path.join(ROOT_DIR, 'models\\utk\\results\\models\\age.keras')
+ETHNICITY_MODEL = os.path.join(ROOT_DIR, 'models\\utk\\results\\models\\ethn.keras')
 
 # ----------------------------------------------------------------------------------------------------------------------
 

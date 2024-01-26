@@ -1,13 +1,15 @@
 from global_variables import *
 
+logging.disable(logging.WARN)
+logging.disable(logging.INFO)
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
+# -----------------------------------------------------------------------------------------------------
+# Read and prepare dataset
+
 TYPE = "age"  # age or ethn
 DATASET = "blncd" # age, ethn or blncd
-
-if TYPE == "age":
-    NUM_CLASSES = 7
-else:
-    NUM_CLASSES = 5
-
+NUM_CLASSES = 7 if TYPE == "age" else 5
 IMG_HEIGHT = 128
 IMG_WIDTH = 128
 SEED = 42  # Seed for split
@@ -71,8 +73,11 @@ model = tf.keras.models.Sequential([
 ])
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer=tf.keras.optimizers.Nadam(), metrics=['accuracy'])
-
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
+
+
+if not os.path.exists("./models"):
+    os.mkdir("./models")
 
 plt.figure(num=1)
 plt.plot(history.history['accuracy'])
@@ -93,10 +98,7 @@ plt.xlabel('epoch')
 plt.legend(['train', 'val'], loc="upper right")
 plt.grid(True, ls='--')
 plt.savefig("./models/" + DATASET.upper() + '_' + TYPE + "_loss.png")
-
 plt.show()
 
 # The trained model is saved to a file.
-if not os.path.exists("./models"):
-    os.mkdir("./models")
 model.save("./models/" + DATASET.upper() + '_' + TYPE + ".keras")
