@@ -7,8 +7,8 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 # -----------------------------------------------------------------------------------------------------
 # Read and prepare dataset
 
-TYPE = "ethn"  # age or ethn
-DATASET = "blncd" # age, ethn or blncd
+TYPE = "age"  # age or ethn
+DATASET = "ethn" # age, ethn or blncd
 NUM_CLASSES = 7 if TYPE == "age" else 5
 IMG_HEIGHT = 128
 IMG_WIDTH = 128
