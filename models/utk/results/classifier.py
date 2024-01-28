@@ -7,7 +7,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 # -----------------------------------------------------------------------------------------------------
 # Read and prepare dataset
 
-TYPE = "age"  # age or ethn
+TYPE = "ethn"  # age or ethn
 DATASET = "ethn" # age, ethn or blncd
 NUM_CLASSES = 7 if TYPE == "age" else 5
 IMG_HEIGHT = 128
@@ -25,10 +25,9 @@ for a in open(UTK_ANNOTATIONS_PATH.split('.')[0] + '_' + DATASET + '.' + UTK_ANN
 
 # Save the labels in alphanumeric order of the images in the dataset directory
 labels = []
-for (_, _, files) in os.walk(UTK_DATASET_DIR + '\\' + DATASET, topdown=True):
-    for fn in files:
-        val = data[fn]
-        labels.append(val)
+for file in os.listdir(UTK_DATASET_DIR + '\\' + DATASET):
+    val = data[file]
+    labels.append(val)
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     UTK_DATASET_DIR + '\\' + DATASET,

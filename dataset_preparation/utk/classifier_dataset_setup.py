@@ -2,8 +2,6 @@ import os.path
 
 from global_variables import *
 
-ETHNICITY = ["white", "black", "asian", "indian", "others"]
-AGE_GROUP = ["0-2", "3-7", "8-12", "13-19", "20-36", "37-65", "66+"]
 TYPE = "ethn"  # age, ethn or blncd (balanced)
 DATA_MAX = 0
 

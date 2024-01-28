@@ -3,6 +3,7 @@ import shutil
 import json
 import random
 import cv2 as cv
+import numpy as np
 from ultralytics import YOLO
 from ultralytics.utils import metrics
 import torch
@@ -12,12 +13,14 @@ import logging
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, confusion_matrix
 from math import ceil
+import pyautogui
 
 # User's Desktop path
 DESKTOP_PATH = os.path.join(os.environ['USERPROFILE'], 'Desktop')
 # (...)\university-computervision-project
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+IMGS_DIR = os.path.join(ROOT_DIR, 'unclassified_imgs')
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -39,7 +42,7 @@ CROWDHUMAN_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\anno
 # The Yolo face detection model
 MODEL = os.path.join(ROOT_DIR, 'models\\crowdhuman\\results\\yolov8n-face.pt')
 # Threshold for trust in bounding boxes
-CONFIDENCE_THRESHOLD = 0.6
+CONFIDENCE_THRESHOLD = 0.5
 # Threshold for the IoU metric
 IOU_THRESHOLD = 0.5
 
@@ -61,9 +64,11 @@ UTK_ANNOTATIONS_DIR = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations')
 UTK_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations\\utk_annotations.txt')
 
 # Age and ethnicity classification models
-AGE_MODEL = os.path.join(ROOT_DIR, 'models\\utk\\results\\models\\age.keras')
-ETHNICITY_MODEL = os.path.join(ROOT_DIR, 'models\\utk\\results\\models\\ethn.keras')
+AGE_MODEL = os.path.join(ROOT_DIR, 'models\\utk\\results\\models\\BLNCD_age.keras')
+ETHNICITY_MODEL = os.path.join(ROOT_DIR, 'models\\utk\\results\\models\\AGE_ethn.keras')
 
+ETHNICITY = ["white", "black", "asian", "indian", "others"]
+AGE_GROUP = ["0-2", "3-7", "8-12", "13-19", "20-36", "37-65", "66+"]
 # ----------------------------------------------------------------------------------------------------------------------
 
 
