@@ -175,6 +175,7 @@ def dataset_builder():
         f.write("{\"ID\": \"" + file + "\", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
 
 
+# Make annotations for the Ultimate dataset
 def ultimateAnnotations():
     f = open(UTK_ANNOTATIONS_PATH.split('.')[0] + '_ultimate.' + UTK_ANNOTATIONS_PATH.split('.')[1], "x")
     for file in os.listdir(RAW_UTK_PATH):
@@ -187,5 +188,5 @@ def ultimateAnnotations():
 if TYPE == "ultimate":
     ultimateAnnotations()
 else:
-    pre_process()
+    preprocess()
     dataset_builder()
