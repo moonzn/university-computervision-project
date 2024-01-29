@@ -8,13 +8,15 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 # Read and prepare dataset
 
 TYPE = "ethn"  # age or ethn
-DATASET = "ethn" # age, ethn or blncd
+DATASET = "ultimate" # age, ethn, blncd or ultimate
 NUM_CLASSES = 7 if TYPE == "age" else 5
 IMG_HEIGHT = 128
 IMG_WIDTH = 128
 SEED = 42  # Seed for split
 SPLIT = 0.2  # Fraction of images for validation
+BATCH_SIZE = 100
 EPOCHS = 100
+PATH = RAW_UTK_PATH if DATASET == "ultimate" else UTK_DATASET_DIR + '\\' + DATASET
 
 # Reading the annotation file and structuring it in a dictionary
 data = dict()
@@ -25,18 +27,19 @@ for a in open(UTK_ANNOTATIONS_PATH.split('.')[0] + '_' + DATASET + '.' + UTK_ANN
 
 # Save the labels in alphanumeric order of the images in the dataset directory
 labels = []
-for file in os.listdir(UTK_DATASET_DIR + '\\' + DATASET):
+for file in os.listdir(PATH):
     val = data[file]
     labels.append(val)
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
-    UTK_DATASET_DIR + '\\' + DATASET,
+    PATH,
     labels=labels,
     label_mode='int',
     validation_split=SPLIT,
     subset="both",
     seed=SEED,
     image_size=(IMG_HEIGHT, IMG_WIDTH),
+    batch_size=BATCH_SIZE,
     shuffle=True)
 
 callback = tf.keras.callbacks.EarlyStopping(monitor="val_loss", mode="min", patience=10)

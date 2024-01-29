@@ -2,7 +2,7 @@ import os.path
 
 from global_variables import *
 
-TYPE = "ethn"  # age, ethn or blncd (balanced)
+TYPE = "ethn"  # age, ethn, blncd (balanced) or ultimate (entire UTK)
 DATA_MAX = 0
 
 
@@ -152,5 +152,16 @@ def dataset_builder():
         f.write("{\"ID\": \"" + file + "\", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
 
 
-pre_process()
-dataset_builder()
+def ultimateAnnotations():
+    f = open(UTK_ANNOTATIONS_PATH.split('.')[0] + '_ultimate.' + UTK_ANNOTATIONS_PATH.split('.')[1], "x")
+    for file in os.listdir(RAW_UTK_PATH):
+        age = str(age_group_finder(int(file.split('_')[0])))
+        ethn = file.split('_')[2]
+        f.write("{\"ID\": \"" + file + "\", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
+
+
+if TYPE == "ultimate":
+    ultimateAnnotations()
+else:
+    pre_process()
+    dataset_builder()
