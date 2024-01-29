@@ -3,6 +3,7 @@ Deep Learning for Computer Vision - Face detector and classifier by ethnicity an
 
 This file contains global variables and functions used in the various scripts developed as part of this project.
 
+
 Authors:
 • Bernardo Grilo, n.º 93251
 • Gonçalo Carrasco, n.º 109379

@@ -1,3 +1,26 @@
+"""
+Deep Learning for Computer Vision - Face detector and classifier by ethnicity and age group
+
+Training and generation of age/ethnicity classification model using a convolutional neural network.
+
+Prerequisites:
+
+• Run the preprocessing.py file in "dataset_preparation/utk" to generate the UTK dataset filtered and
+ready to train the models.
+• Change the TYPE and DATASET variables to choose which type of classifier you want to generate (age group or ethnicity)
+and with which type of dataset filtering you want to train the models.
+
+This script will read the annotations from the filtered dataset chosen for training and will train a convolutional
+neural network with the images from that dataset.
+After training, the accuracy and loss function graphs corresponding to the training and validation set are displayed.
+The trained model is saved, ready for use.
+
+Authors:
+• Bernardo Grilo, n.º 93251
+• Gonçalo Carrasco, n.º 109379
+• Raúl Nascimento, n.º 87405
+"""
+
 from global_variables import *
 
 logging.disable(logging.WARN)
