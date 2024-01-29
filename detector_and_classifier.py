@@ -28,9 +28,7 @@ ethnicity_classifier = tf.keras.models.load_model(ETHNICITY_MODEL)
 screen_w, screen_h = pyautogui.size()
 
 # Reading the images
-imgs = os.listdir(IMGS_DIR)
-random.shuffle(imgs)
-for file in imgs:
+for file in os.listdir(IMGS_DIR):
     # Detection of faces in the image
     img = cv.imread(os.path.join(IMGS_DIR, file))
     results = face_detector.predict(img, verbose=False)
@@ -76,3 +74,4 @@ for file in imgs:
         img = cv.resize(img, (0, 0), fx=0.4, fy=0.4)
     cv.imshow(file, img)
     cv.waitKey(0)
+    cv.destroyAllWindows()
