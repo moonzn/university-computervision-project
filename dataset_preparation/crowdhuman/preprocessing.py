@@ -1,12 +1,35 @@
+"""
+Deep Learning for Computer Vision - Face detector and classifier by ethnicity and age group
+
+Preprocessing for the CrowdHuman dataset.
+
+Prerequisites:
+
+• A "CrowdHuman" folder in the user's desktop containing a sample of the CrowdHuman dataset,
+we used training 1 through 3. Note that some images are inconsistently named and will
+cause errors, these should be deleted.
+
+• An annotations file with the ODGT format (one JSON object per line), which has to have the annotations
+for the images in the "CrowdHuman" folder.
+
+Other datasets can be used as long as the Path constants are changed in global_variables.py and all other
+requirements are met.
+
+This script will read the images and their annotations and create a filtered dataset inside the project.
+The intent is to only get images that contain a number of people less than or equal to MAX_PEOPLE_PER_IMAGE.
+
+Authors:
+• Bernardo Grilo, n.º 93251
+• Gonçalo Carrasco, n.º 109379
+• Raúl Nascimento, n.º 87405
+"""
+
 from global_variables import *
 
-# User's Desktop path
-desktop_path = DESKTOP_PATH
+MAX_PEOPLE_PER_IMAGE = 5  # Maximum number of people per image
 
 # The CrowdHuman dataset should be placed in the user's desktop, in a folder named 'CrowdHuman'
 raw_crowdhuman_path = RAW_CROWDHUMAN_PATH
-# Annotations for this dataset
-raw_annotations = RAW_CROWDHUMAN_ANNOTATIONS_PATH
 
 # Throw error if there is no 'CrowdHuman' folder in the user's desktop
 if not os.path.exists(raw_crowdhuman_path):
@@ -28,9 +51,6 @@ for dyr in directories:
         shutil.rmtree(dyr)
         os.makedirs(dyr)
 
-# Maximum number of people per image
-max_people_per_image = 5
-
 number_of_images = 0
 number_of_detections = 0
 annotations_filtered = ''
@@ -45,8 +65,8 @@ with open(f'{RAW_CROWDHUMAN_ANNOTATIONS_PATH}', 'r') as file:
             if bbox['tag'] == 'person':
                 n_bounding_boxes += 1
 
-        if n_bounding_boxes <= max_people_per_image:
-            # Cópia da imagem
+        if n_bounding_boxes <= MAX_PEOPLE_PER_IMAGE:
+            # Copy the image into the project
             img_fn = f"{json_obj['ID']}.jpg"
             shutil.copy(f'{raw_crowdhuman_path}\\{img_fn}', f'{crowdhuman_dir}\\{img_fn}')
 
