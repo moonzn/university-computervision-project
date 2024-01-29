@@ -75,7 +75,7 @@ UTK_ANNOTATIONS_DIR = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations')
 UTK_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations\\utk_annotations.txt')
 
 # Age and ethnicity classification models
-AGE_MODEL = os.path.join(ROOT_DIR, 'models\\utk\\results\\models\\BLNCD_age.keras')
+AGE_MODEL = os.path.join(ROOT_DIR, 'models\\utk\\results\\models\\ULTIMATE_age.keras')
 ETHNICITY_MODEL = os.path.join(ROOT_DIR, 'models\\utk\\results\\models\\AGE_ethn.keras')
 
 ETHNICITY = ["white", "black", "asian", "indian", "others"]
