@@ -1,3 +1,22 @@
+"""
+Deep Learning for Computer Vision - Project (Face detector and classifier by ethnicity and age group)
+
+Starting point of the application.
+This file reads a directory that has images to be classified.
+For each image, faces are detected and classified by age group and ethnicity.
+Each image is displayed with the bounding boxes of people's faces, annotated with the prediction of ethnicity and age group.
+
+Instructions:
+• To run this program you must place an "unclassified_imgs" directory in the same directory as this script.
+• Place the images you want to classify in this directory.
+• TODO
+
+Authors:
+• Bernardo Grilo, n.º 93251
+• Gonçalo Carrasco, n.º 109379
+• Raúl Nascimento, n.º 87405
+"""
+
 from global_variables import *
 
 # Loading the models
