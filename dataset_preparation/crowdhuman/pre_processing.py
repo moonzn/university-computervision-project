@@ -5,14 +5,15 @@ Preprocessing for the CrowdHuman dataset.
 
 Prerequisites:
 
-• "CrowdHuman" folder in the user's desktop containing a sample of the CrowdHuman dataset,
+• A "CrowdHuman" folder in the user's desktop containing a sample of the CrowdHuman dataset,
 we used training 1 through 3. Note that some images are inconsistently named and will
-cause errors.
+cause errors, these should be deleted.
 
 • An annotations file with the ODGT format (one JSON object per line), which has to have the annotations
 for the images in the "CrowdHuman" folder.
 
-Other datasets can be used as long as the Path constants are changed in global_variables.py.
+Other datasets can be used as long as the Path constants are changed in global_variables.py and all other
+requirements are met.
 
 This script will read the images and their annotations and create a filtered dataset inside the project.
 The intent is to only get images that contain a number of people less than or equal to max_people_per_image.
