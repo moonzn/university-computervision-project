@@ -5,8 +5,9 @@ Training and generation of age/ethnicity classification model using a convolutio
 
 Prerequisites:
 
-• Run the preprocessing.py file in "dataset_preparation/utk" to generate the UTK dataset filtered and
-ready to train the models.
+• Run the preprocessing.py script in "dataset_preparation/utk" to generate a filtered version of the
+UTK dataset.
+
 • Change the TYPE and DATASET variables to choose which type of classifier you want to generate (age group or ethnicity)
 and with which type of dataset filtering you want to train the models.
 
@@ -30,8 +31,8 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 # -----------------------------------------------------------------------------------------------------
 # Read and prepare dataset
 
-TYPE = "ethn"  # age or ethn
-DATASET = "ethn"  # age, ethn or blncd
+TYPE = "age"  # age or ethn
+DATASET = "ethn" # age, ethn or blncd
 NUM_CLASSES = 7 if TYPE == "age" else 5
 IMG_HEIGHT = 128
 IMG_WIDTH = 128
@@ -62,7 +63,7 @@ train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
     image_size=(IMG_HEIGHT, IMG_WIDTH),
     shuffle=True)
 
-callback = tf.keras.callbacks.EarlyStopping(monitor="val_loss", mode="min", patience=10)
+callback = tf.keras.callbacks.EarlyStopping(monitor="val_loss", mode="min", patience=9)
 
 # Define, compile and train model
 model = tf.keras.models.Sequential([
@@ -98,6 +99,7 @@ model = tf.keras.models.Sequential([
 ])
 
 model.compile(loss='sparse_categorical_crossentropy', optimizer=tf.keras.optimizers.Nadam(), metrics=['accuracy'])
+
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds, callbacks=[callback])
 
 if not os.path.exists("./models"):

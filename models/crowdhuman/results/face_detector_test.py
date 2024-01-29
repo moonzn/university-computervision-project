@@ -5,7 +5,8 @@ A script to test the Yolov8-Face detector on the CrowdHuman dataset.
 
 Prerequisites:
 
-• Running the crowdhuman/preprocessing.py script.
+• Run the preprocessing.py script in "dataset_preparation/crowdhuman" to generate a filtered
+version of the CrowdHuman dataset.
 
 • A Yolov8-Face model.
 
