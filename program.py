@@ -23,7 +23,7 @@ Authors:
 from global_variables import *
 
 # Loading the models
-face_detector = YOLO(MODEL)
+face_detector = YOLO(YOLO_MODEL)
 age_classifier = tf.keras.models.load_model(AGE_MODEL)
 ethnicity_classifier = tf.keras.models.load_model(ETHNICITY_MODEL)
 
