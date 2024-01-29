@@ -1,5 +1,5 @@
 """
-Deep Learning for Computer Vision - Project (Face detector and classifier by ethnicity and age group)
+Deep Learning for Computer Vision - Face detector and classifier by ethnicity and age group
 
 This file contains global variables and functions used in the various scripts developed as part of this project.
 
