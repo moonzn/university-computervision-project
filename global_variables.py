@@ -19,7 +19,7 @@ import pyautogui
 DESKTOP_PATH = os.path.join(os.environ['USERPROFILE'], 'Desktop')
 # (...)\university-computervision-project
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-
+# Path with the images that "program.py" detects the faces and classifies them
 IMGS_DIR = os.path.join(ROOT_DIR, 'unclassified_imgs')
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ CROWDHUMAN_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\anno
 # The Yolo face detection model
 MODEL = os.path.join(ROOT_DIR, 'models\\crowdhuman\\results\\yolov8n-face.pt')
 # Threshold for trust in bounding boxes
-CONFIDENCE_THRESHOLD = 0.5
+CONFIDENCE_THRESHOLD = 0.6
 # Threshold for the IoU metric
 IOU_THRESHOLD = 0.5
 
@@ -72,12 +72,14 @@ AGE_GROUP = ["0-2", "3-7", "8-12", "13-19", "20-36", "37-65", "66+"]
 # ----------------------------------------------------------------------------------------------------------------------
 
 
+# Function that draws bounding boxes on an image corresponding to the list of coordinates provided
+# and which are in the format (x1, y1, x2, y2).
 def draw_bounding_boxes(img, boxes, color, thickness):
-    for coords in boxes:
+    for coord in boxes:
         # Represents the top left corner of rectangle
-        start_point = (int(coords[0]), int(coords[1]))
+        start_point = (int(coord[0]), int(coord[1]))
         # Represents the bottom right corner of rectangle
-        end_point = (int(coords[2]), int(coords[3]))
+        end_point = (int(coord[2]), int(coord[3]))
         img = cv.rectangle(img, start_point, end_point, color, thickness)
 
     return img
