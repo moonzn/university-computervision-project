@@ -1,18 +1,16 @@
 """
 Deep Learning for Computer Vision - Face detector and classifier by ethnicity and age group
 
-Starting point of the application.
 This file reads a directory that has images to be classified.
 For each image, faces are detected and classified by age group and ethnicity.
 Each image is displayed with the bounding boxes of people's faces, annotated with the prediction of ethnicity
 and age group.
 
 Prerequisites:
-• To run this program you must place an "unclassified_imgs" directory in the same directory as this script.
 
-• Place the images you want to classify in this directory.
+• Running all scripts under "dataset_preparation" and "models", each with their specific instructions.
 
-• TODO
+• An "unclassified_imgs" directory in the same directory as this script, with the images to be classified.
 
 Authors:
 • Bernardo Grilo, n.º 93251

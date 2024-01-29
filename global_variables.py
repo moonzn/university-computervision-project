@@ -30,7 +30,7 @@ import pyautogui
 DESKTOP_PATH = os.path.join(os.environ['USERPROFILE'], 'Desktop')
 # (...)\university-computervision-project
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-# Path with the images that "program.py" detects the faces and classifies them
+# Path with the images that "detector_and_classifier.py" detects the faces and classifies them
 IMGS_DIR = os.path.join(ROOT_DIR, 'unclassified_imgs')
 
 # ----------------------------------------------------------------------------------------------------------------------
