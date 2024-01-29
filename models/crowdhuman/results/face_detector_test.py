@@ -104,10 +104,6 @@ for file in os.listdir(CROWDHUMAN_DIR):
     total_images += 1
     total_boxes += len(img_boxes)
 
-print(len(cv_images))
-print(len(predicted_boxes))
-print(len(annotated_boxes))
-
 # Display of metrics in relation to the total bounding boxes of the entire dataset
 precision = true_positives / (true_positives + false_positives)
 recall = true_positives / total_boxes
