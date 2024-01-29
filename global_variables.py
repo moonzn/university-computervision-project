@@ -69,7 +69,7 @@ RAW_UTK_PATH = os.path.join(DESKTOP_PATH, 'UTK')
 # Filtered version will be created in these directories
 UTK_DIR = os.path.join(ROOT_DIR, 'datasets\\utk')
 UTK_DATASET_DIR = os.path.join(ROOT_DIR, 'datasets\\utk\\dataset')
-UTK_PREPROCESSED_DIR = os.path.join(ROOT_DIR, 'dataset_preparation\\utk\\pre-processed')
+UTK_PREPROCESSED_DIR = os.path.join(ROOT_DIR, 'dataset_preparation\\utk\\preprocessed')
 UTK_ANNOTATIONS_DIR = os.path.join(ROOT_DIR, 'datasets\\utk\\annotations')
 
 # The filtered UTK annotations will be stored in this file

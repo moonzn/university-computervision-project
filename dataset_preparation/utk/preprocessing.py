@@ -1,11 +1,31 @@
-import os.path
+"""
+Deep Learning for Computer Vision - Face detector and classifier by ethnicity and age group
+
+Preprocessing for the UTK dataset.
+
+Prerequisites:
+
+• A "UTK" folder in the user's desktop containing the UTK dataset, we used a cropped variant.
+Note that some images are inconsistently named and will cause errors, these should be deleted.
+
+This script will read the images and their annotations (in this case the file names are the annotations)
+and create a filtered dataset inside the project.
+The intent is to balance the UTK dataset in different ways to try and get the best results from the classifier.
+
+Authors:
+• Bernardo Grilo, n.º 93251
+• Gonçalo Carrasco, n.º 109379
+• Raúl Nascimento, n.º 87405
+"""
 
 from global_variables import *
 
-TYPE = "ethn"  # age, ethn or blncd (balanced)
+# The type of balancing, which type gets priority in balancing
+TYPE = "blncd"  # age, ethn or blncd (balanced)
 DATA_MAX = 0
 
 
+# How our age groups are defined
 def age_group_finder(age):
     if 0 <= age < 3:
         return 0
@@ -23,6 +43,7 @@ def age_group_finder(age):
         return 6
 
 
+# Function to show the statistics of how the dataset is balanced, after balancing is done
 def stats():
     lst = list()
     total_age = [0, 0, 0, 0, 0, 0, 0]
@@ -69,7 +90,8 @@ def stats():
             print("The max number of photos per group for a ethnicity balanced dataset is " + str(DATA_MAX))
 
 
-def pre_process():
+# Function to split the dataset by age group and ethnicity
+def preprocess():
     if os.path.exists(RAW_UTK_PATH):
         if not os.path.exists(UTK_DATASET_DIR):
             os.makedirs(UTK_DATASET_DIR)
@@ -103,6 +125,7 @@ def pre_process():
                     shutil.copy(RAW_UTK_PATH + '\\' + filename, UTK_PREPROCESSED_DIR + '\\' + TYPE + '\\' + ETHNICITY[ethn])
 
 
+# Function to build the dataset based on the split done by the preprocess function
 def dataset_builder():
     stats()
 
@@ -152,5 +175,6 @@ def dataset_builder():
         f.write("{\"ID\": \"" + file + "\", \"AGE\": " + age + ", \"ETHN\": " + ethn + "}\n")
 
 
-pre_process()
+# Runs the functions
+preprocess()
 dataset_builder()
