@@ -3,7 +3,6 @@ Deep Learning for Computer Vision - Face detector and classifier by ethnicity an
 
 This file contains global variables and functions used in the various scripts developed as part of this project.
 
-
 Authors:
 • Bernardo Grilo, n.º 93251
 • Gonçalo Carrasco, n.º 109379
@@ -52,7 +51,7 @@ CROWHUMAN_ANNOTATIONS_DIR = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\annota
 CROWDHUMAN_ANNOTATIONS_PATH = os.path.join(ROOT_DIR, 'datasets\\crowdhuman\\annotations\\crowdhuman_annotations.txt')
 
 # The Yolo face detection model
-MODEL = os.path.join(ROOT_DIR, 'models\\crowdhuman\\results\\yolov8n-face.pt')
+YOLO_MODEL = os.path.join(ROOT_DIR, 'models\\crowdhuman\\results\\yolov8n-face.pt')
 # Threshold for trust in bounding boxes
 CONFIDENCE_THRESHOLD = 0.6
 # Threshold for the IoU metric
